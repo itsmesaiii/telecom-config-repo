@@ -1,25 +1,22 @@
 server:
   port: 8080
 
-# --- NEW Central Swagger UI Configuration ---
+# --- Central Swagger UI Configuration ---
 springdoc:
   swagger-ui:
-    # This is the central URL
     path: /swagger-ui.html
-    # --- THIS IS THE MANUAL FIX ---
-    # We are manually creating the dropdown menu
+    # This manually creates the dropdown menu
     urls:
-      - name: Device Service # This is the name in the dropdown
-        url: /v3/api-docs/device-service # This is the path it will call
-    
-  # We have REMOVED the 'discovery: enabled: true'
-  # because it was not working.
+      - name: Device Service
+        url: /v3/api-docs/device-service
 
 spring:
   cloud:
     gateway:
       server:
         webflux:
+          
+          # --- All routes go here ---
           routes:
             # --- ROUTE 1: Your manual route for the device service ---
             - id: device-service-route
@@ -29,19 +26,23 @@ spring:
               filters:
                 - StripPrefix=1
                 
-            # --- ROUTE 2: THE (STILL REQUIRED) ROUTE FOR SWAGGER ---
+            # --- ROUTE 2: THE ROUTE FOR SWAGGER (This version is correct) ---
             - id: openapi-dynamic-route
               uri: lb://{segment}
               predicates:
+                # Captures 'device-service' as 'segment'
                 - Path=/v3/api-docs/{segment}
               filters:
+                # Rewrites /v3/api-docs/device-service -> /v3/api-docs
+                # and forwards it to the service found using 'segment'
                 - RewritePath=/v3/api-docs/(?<segment>.*), /v3/api-docs
-
-      # This locator finds all other services (we can leave it)
-      discovery:
-        locator:
-          enabled: true
-          lower-case-service-id: true
+          
+          # --- THIS BLOCK IS NOW MOVED INSIDE 'webflux' ---
+          # This fixes the deprecation warning
+          discovery:
+            locator:
+              enabled: true
+              lower-case-service-id: true
               
 management:
   endpoints:
