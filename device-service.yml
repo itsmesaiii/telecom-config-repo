@@ -1,5 +1,5 @@
 server:
-  port: 9001 # Port for the device-service
+  port: 9001
   servlet:
     context-path: /deviceservice
 
@@ -12,17 +12,13 @@ spring:
 
   jpa:
     hibernate:
-      # Automatically creates or updates database tables based on your Java entities
       ddl-auto: update
-    # Prints the SQL queries being executed to the console (good for debugging)
     show-sql: true
     properties:
       hibernate:
-        # Specifies the correct SQL dialect for MySQL
         dialect: org.hibernate.dialect.MySQLDialect
 
 # --- Actuator Configuration ---
-# This makes the /actuator/health and /actuator/info endpoints accessible via HTTP
 management:
   endpoints:
     web:
@@ -30,16 +26,13 @@ management:
         include: health,info
 
 # --- Eureka Client Configuration ---
-# Tells this service how to find and register with the Eureka server
 eureka:
   client:
     service-url:
-      # The address of our discovery-service (Eureka)
       defaultZone: http://localhost:8761/eureka/
-
   instance:
     hostname: localhost
     secure-port-enabled: false
-    non-secure-port: ${server.port} 
+    non-secure-port: ${server.port}
     status-page-url: http://${eureka.instance.hostname}:${server.port}/actuator/info
     health-check-url: http://${eureka.instance.hostname}:${server.port}/actuator/health
