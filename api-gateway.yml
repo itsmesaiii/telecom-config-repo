@@ -4,38 +4,28 @@ server:
 spring:
   cloud:
     gateway:
-      routes:
-        # 1. This is a unique ID for our device route
-        - id: device-service-route
+      # --- All keys are now prefixed with 'server.webflux' ---
+      server:
+        webflux:
+          routes:
+            - id: device-service-route
+              uri: lb://DEVICE-SERVICE
+              predicates:
+                - Path=/deviceservice/**
+              filters:
+                - StripPrefix=1
 
-          # 2. 'lb://' tells the gateway to find the service in Eureka
-          #    The name MUST match the Eureka ID exactly (DEVICE-SERVICE)
-          uri: lb://DEVICE-SERVICE
+          discovery:
+            locator:
+              enabled: true
+              lower-case-service-id: true
 
-          # 3. This is the "trigger". It matches all incoming requests
-          #    that start with '/deviceservice/...' (our clean, lowercase URL)
-          predicates:
-            - Path=/deviceservice/**
-
-          # 4. This filter removes '/deviceservice' before forwarding the request
-          #    (e.g., /deviceservice/actuator/health -> /actuator/health)
-          filters:
-            - StripPrefix=1
-
-      # We can leave this here, but our explicit route above takes priority.
-      discovery:
-        locator:
-          enabled: true
-          lower-case-service-id: true
-
-# --- This section exposes the health/info endpoints ---
 management:
   endpoints:
     web:
       exposure:
         include: health,info
 
-# --- This section fixes the SSL/Hostname error ---
 eureka:
   instance:
     hostname: localhost
