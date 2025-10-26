@@ -1,0 +1,35 @@
+server:
+  port: 9002 
+
+  # --- Database Configuration ---
+  datasource:
+    url: jdbc:mysql://localhost:3306/license_db?createDatabaseIfNotExist=true
+    username: root
+    password: root
+
+  jpa:
+    hibernate:
+      ddl-auto: update 
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+
+# --- Actuator Configuration ---
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+# --- Eureka Client Configuration ---
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    hostname: localhost
+    secure-port-enabled: false
+    non-secure-port: ${server.port}
+    status-page-url: http://${eureka.instance.hostname}:${server.port}/actuator/info
+    health-check-url: http://${eureka.instance.hostname}:${server.port}/actuator/health
