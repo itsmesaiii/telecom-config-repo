@@ -1,5 +1,5 @@
 server:
-  port: 8081 # Port for the device-service
+  port: 9001 # Port for the device-service
 
 # --- Database Configuration ---
 spring:
