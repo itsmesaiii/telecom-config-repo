@@ -26,19 +26,18 @@ spring:
               filters:
                 - StripPrefix=1
                 
-            # --- ROUTE 2: THE ROUTE FOR SWAGGER (This version is correct) ---
+            # --- ROUTE 2: THE ROUTE FOR SWAGGER (WITH THE FIX) ---
             - id: openapi-dynamic-route
               uri: lb://{segment}
               predicates:
                 # Captures 'device-service' as 'segment'
                 - Path=/v3/api-docs/{segment}
               filters:
-                # Rewrites /v3/api-docs/device-service -> /v3/api-docs
-                # and forwards it to the service found using 'segment'
-                - RewritePath=/v3/api-docs/(?<segment>.*), /v3/api-docs
+                # --- THIS IS THE FIX ---
+                # This simpler filter just rewrites the path and doesn't conflict
+                - RewritePath=/v3/api-docs/.*, /v3/api-docs
           
-          # --- THIS BLOCK IS NOW MOVED INSIDE 'webflux' ---
-          # This fixes the deprecation warning
+          # --- This block fixes the deprecation warning ---
           discovery:
             locator:
               enabled: true
