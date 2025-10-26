@@ -24,10 +24,26 @@ spring:
                 - Path=/deviceservice/**
               filters:
                 # This removes /deviceservice before forwarding
-                # to the device-service (which is correct)
                 - StripPrefix=1
                 
-      # This locator finds all other services (like Eureka)
+            # --- ROUTE 2: THE MISSING ROUTE FOR SWAGGER ---
+            # This route finds the /v3/api-docs endpoint on any service
+            # registered with Eureka (like 'device-service')
+            - id: openapi-dynamic-route
+              # 'lb' means use Eureka. The 'segment' variable is
+              # captured from the predicate below.
+              uri: lb://{segment}
+              predicates:
+                # This captures the service name (e.g., "device-service")
+                # from the URL into a variable named 'segment'
+                - Path=/v3/api-docs/{segment}
+              filters:
+                # This rewrites the path before forwarding it.
+                # from: /v3/api-docs/device-service
+                # to:   /v3/api-docs
+                - RewritePath=/v3/api-docs/(?<segment>.*), /v3/api-docs
+
+      # This locator finds all other services (we can leave it)
       discovery:
         locator:
           enabled: true
