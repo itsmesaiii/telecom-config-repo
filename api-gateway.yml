@@ -26,16 +26,17 @@ spring:
               filters:
                 - StripPrefix=1
                 
-            # --- ROUTE 2: THE ROUTE FOR SWAGGER (WITH THE FIX) ---
-            - id: openapi-dynamic-route
-              uri: lb://{segment}
+            # --- ROUTE 2: THE NEW, SIMPLE, CORRECT ROUTE ---
+            # This route explicitly maps the Swagger URL to the DEVICE-SERVICE
+            # It has no variables and will not crash.
+            - id: openapi-deviceservice-route
+              uri: lb://DEVICE-SERVICE
               predicates:
-                # Captures 'device-service' as 'segment'
-                - Path=/v3/api-docs/{segment}
+                - Path=/v3/api-docs/device-service
               filters:
-                # --- THIS IS THE FIX ---
-                # This simpler filter just rewrites the path and doesn't conflict
-                - RewritePath=/v3/api-docs/.*, /v3/api-docs
+                # This rewrites /v3/api-docs/device-service -> /v3/api-docs
+                # before forwarding to DEVICE-SERVICE
+                - RewritePath=/v3/api-docs/device-service, /v3/api-docs
           
           # --- This block fixes the deprecation warning ---
           discovery:
