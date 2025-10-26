@@ -1,14 +1,13 @@
 server:
   port: 8080
 
-# This section enables the central Swagger page ON THE GATEWAY
+# --- Central Swagger UI Configuration ---
 springdoc:
-  api-docs:
-    path: /v3/api-docs
   swagger-ui:
     # This is the new, single, central URL
     path: /swagger-ui.html
-  # This tells the gateway to look for APIs in Eureka
+  # This tells the gateway to find API definitions
+  # from services in Eureka
   discovery:
     enabled: true
 
@@ -18,20 +17,21 @@ spring:
       server:
         webflux:
           routes:
-            # This is your device-service route
+            # --- ROUTE 1: Your manual route for the device service ---
             - id: device-service-route
               uri: lb://DEVICE-SERVICE
               predicates:
                 - Path=/deviceservice/**
               filters:
-                # --- THIS IS NOW CORRECTLY ADDED BACK ---
+                # This removes /deviceservice before forwarding
+                # to the device-service (which is correct)
                 - StripPrefix=1
-          
-          # This tells the gateway how to find all microservices
-          discovery:
-            locator:
-              enabled: true
-              lower-case-service-id: true
+                
+      # This locator finds all other services (like Eureka)
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
               
 management:
   endpoints:
