@@ -1,15 +1,19 @@
 server:
   port: 8080
 
-# --- Central Swagger UI Configuration ---
+# --- NEW Central Swagger UI Configuration ---
 springdoc:
   swagger-ui:
-    # This is the new, single, central URL
+    # This is the central URL
     path: /swagger-ui.html
-  # This tells the gateway to find API definitions
-  # from services in Eureka
-  discovery:
-    enabled: true
+    # --- THIS IS THE MANUAL FIX ---
+    # We are manually creating the dropdown menu
+    urls:
+      - name: Device Service # This is the name in the dropdown
+        url: /v3/api-docs/device-service # This is the path it will call
+    
+  # We have REMOVED the 'discovery: enabled: true'
+  # because it was not working.
 
 spring:
   cloud:
@@ -23,24 +27,14 @@ spring:
               predicates:
                 - Path=/deviceservice/**
               filters:
-                # This removes /deviceservice before forwarding
                 - StripPrefix=1
                 
-            # --- ROUTE 2: THE MISSING ROUTE FOR SWAGGER ---
-            # This route finds the /v3/api-docs endpoint on any service
-            # registered with Eureka (like 'device-service')
+            # --- ROUTE 2: THE (STILL REQUIRED) ROUTE FOR SWAGGER ---
             - id: openapi-dynamic-route
-              # 'lb' means use Eureka. The 'segment' variable is
-              # captured from the predicate below.
               uri: lb://{segment}
               predicates:
-                # This captures the service name (e.g., "device-service")
-                # from the URL into a variable named 'segment'
                 - Path=/v3/api-docs/{segment}
               filters:
-                # This rewrites the path before forwarding it.
-                # from: /v3/api-docs/device-service
-                # to:   /v3/api-docs
                 - RewritePath=/v3/api-docs/(?<segment>.*), /v3/api-docs
 
       # This locator finds all other services (we can leave it)
