@@ -1,5 +1,7 @@
 server:
   port: 9001 # Port for the device-service
+  servlet:
+    context-path: /deviceservice
 
 # --- Database Configuration ---
 spring:
