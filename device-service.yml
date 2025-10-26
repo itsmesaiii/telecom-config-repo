@@ -1,7 +1,5 @@
 server:
   port: 9001
-  servlet:
-    context-path: /deviceservice
 
 # --- Database Configuration ---
 spring:
@@ -36,7 +34,3 @@ eureka:
     non-secure-port: ${server.port}
     status-page-url: http://${eureka.instance.hostname}:${server.port}/actuator/info
     health-check-url: http://${eureka.instance.hostname}:${server.port}/actuator/health
-
-springdoc:
-  swagger-ui:
-    config-url: /deviceservice/v3/api-docs/swagger-config
