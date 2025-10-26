@@ -1,20 +1,12 @@
 server:
   port: 8080
 
-# This section enables the central Swagger page on the gateway
-springdoc:
-  api-docs:
-    path: /v3/api-docs
-  swagger-ui:
-    path: /swagger-ui.html
-  discovery:
-    enabled: true
-
 spring:
   cloud:
     gateway:
       server:
         webflux:
+          
           # This is your correct, existing route for the device service
           routes:
             - id: device-service-route
@@ -22,16 +14,11 @@ spring:
               predicates:
                 - Path=/deviceservice/**
 
-          # This section tells the gateway how to find Swagger on ALL microservices
+          # This is the correct location for this block
           discovery:
             locator:
               enabled: true
               lower-case-service-id: true
-              # --- THESE ARE THE MISSING LINES ---
-              predicates:
-                - Path=/v3/api-docs/**
-              filters:
-                - RewritePath=/(?<segment>.*)/v3/api-docs, /$\{segment}/v3/api-docs
 
 management:
   endpoints:
