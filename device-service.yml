@@ -34,3 +34,8 @@ eureka:
     non-secure-port: ${server.port}
     status-page-url: http://${eureka.instance.hostname}:${server.port}/actuator/info
     health-check-url: http://${eureka.instance.hostname}:${server.port}/actuator/health
+
+# --- ADD THIS SECTION ---
+# This gives our API a 'group name'
+springdoc:
+  group: device-service
