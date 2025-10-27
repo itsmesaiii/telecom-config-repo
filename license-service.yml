@@ -1,10 +1,9 @@
 server:
   port: 9002
 
-# The 'spring' key is ABSOLUTELY ESSENTIAL for configuration to be read
 spring:
   application:
-    name: LICENSE-SERVICE 
+    name: license-service 
   
   # --- Database Configuration (must be under 'spring') ---
   datasource:
