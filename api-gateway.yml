@@ -9,16 +9,16 @@ springdoc:
     urls:
       - name: Device Service
         url: /v3/api-docs/device-service
+      - name: License Service
+        url: /v3/api-docs/license-service
 
 spring:
   cloud:
     gateway:
       server:
         webflux:
-          
-          # --- All routes go here ---
           routes:
-            # --- ROUTE 1: Your manual route for the device service ---
+            # --- DEVICE-SERVICE ROUTES ---
             - id: device-service-route
               uri: lb://DEVICE-SERVICE
               predicates:
@@ -26,17 +26,27 @@ spring:
               filters:
                 - StripPrefix=1
                 
-            # --- ROUTE 2: THE NEW, SIMPLE, CORRECT ROUTE ---
-            # This route explicitly maps the Swagger URL to the DEVICE-SERVICE
-            # It has no variables and will not crash.
             - id: openapi-deviceservice-route
               uri: lb://DEVICE-SERVICE
               predicates:
                 - Path=/v3/api-docs/device-service
               filters:
-                # This rewrites /v3/api-docs/device-service -> /v3/api-docs
-                # before forwarding to DEVICE-SERVICE
                 - RewritePath=/v3/api-docs/device-service, /v3/api-docs
+
+            # --- LICENSE-SERVICE ROUTES ---
+            - id: license-service-route
+              uri: lb://LICENSE-SERVICE
+              predicates:
+                - Path=/licenseservice/**
+              filters:
+                - StripPrefix=1
+
+            - id: openapi-licenseservice-route
+              uri: lb://LICENSE-SERVICE
+              predicates:
+                - Path=/v3/api-docs/license-service
+              filters:
+                - RewritePath=/v3/api-docs/license-service, /v3/api-docs
           
           # --- This block fixes the deprecation warning ---
           discovery:
