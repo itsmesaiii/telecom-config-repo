@@ -1,7 +1,12 @@
 server:
-  port: 9002 
+  port: 9002
 
-  # --- Database Configuration ---
+# The 'spring' key is ABSOLUTELY ESSENTIAL for configuration to be read
+spring:
+  application:
+    name: LICENSE-SERVICE 
+  
+  # --- Database Configuration (must be under 'spring') ---
   datasource:
     url: jdbc:mysql://localhost:3306/license_db?createDatabaseIfNotExist=true
     username: root
@@ -9,7 +14,7 @@ server:
 
   jpa:
     hibernate:
-      ddl-auto: update 
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate:
