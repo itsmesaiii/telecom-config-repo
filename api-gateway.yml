@@ -16,6 +16,12 @@ springdoc:
 
 spring:
   cloud:
+    # --- This block fixes the deprecation warning ---
+    discovery: # <-- CORRECT LOCATION (Sibling of 'gateway')
+      locator:
+        enabled: true
+        lower-case-service-id: true
+        
     gateway:
       server:
         webflux:
@@ -50,7 +56,7 @@ spring:
               filters:
                 - RewritePath=/v3/api-docs/license-service, /v3/api-docs
 
-             # --- DEVICE-SERVICE ROUTES ---
+             # --- USER-SERVICE ROUTES ---
 
             - id: user-service-route
               uri: lb://USER-SERVICE
@@ -65,12 +71,6 @@ spring:
                 - Path=/v3/api-docs/user-service
               filters:
                 - RewritePath=/v3/api-docs/user-service, /v3/api-docs
-                
-            # --- This block fixes the deprecation warning ---
-            discovery:
-              locator:
-                enabled: true
-                lower-case-service-id: true
                 
 management:
   endpoints:
