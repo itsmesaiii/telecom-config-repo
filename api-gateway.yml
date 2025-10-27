@@ -11,6 +11,8 @@ springdoc:
         url: /v3/api-docs/device-service
       - name: License Service
         url: /v3/api-docs/license-service
+      - name: User Service
+        url: /v3/api-docs/user-service
 
 spring:
   cloud:
@@ -47,13 +49,29 @@ spring:
                 - Path=/v3/api-docs/license-service
               filters:
                 - RewritePath=/v3/api-docs/license-service, /v3/api-docs
-          
-          # --- This block fixes the deprecation warning ---
-          discovery:
-            locator:
-              enabled: true
-              lower-case-service-id: true
-              
+
+             # --- DEVICE-SERVICE ROUTES ---
+
+            - id: user-service-route
+              uri: lb://USER-SERVICE
+              predicates:
+                - Path=/userservice/**
+              filters:
+                - StripPrefix=1
+                
+            - id: openapi-userservice-route
+              uri: lb://USER-SERVICE
+              predicates:
+                - Path=/v3/api-docs/user-service
+              filters:
+                - RewritePath=/v3/api-docs/user-service, /v3/api-docs
+                
+            # --- This block fixes the deprecation warning ---
+            discovery:
+              locator:
+                enabled: true
+                lower-case-service-id: true
+                
 management:
   endpoints:
     web:
