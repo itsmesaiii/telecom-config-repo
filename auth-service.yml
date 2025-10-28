@@ -6,6 +6,12 @@ eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka/
+      
+  # This prevents the "Connection timed out" error.
+  instance:
+    prefer-ip-address: true
+    ip-address: 127.0.0.1
+    hostname: 127.0.0.1 
 
 # --- Actuator Configuration ---
 management:
