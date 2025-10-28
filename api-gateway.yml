@@ -13,6 +13,7 @@ springdoc:
         url: /v3/api-docs/license-service
       - name: User Service
         url: /v3/api-docs/user-service
+    use-relative-path: true
 
 spring:
   cloud:
