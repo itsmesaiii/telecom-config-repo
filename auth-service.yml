@@ -6,12 +6,13 @@ eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka/
-      
-  # This prevents the "Connection timed out" error.
+  
   instance:
-    prefer-ip-address: true
-    ip-address: 127.0.0.1
-    hostname: 127.0.0.1 
+    hostname: localhost 
+    secure-port-enabled: false
+    non-secure-port: ${server.port}
+    status-page-url: http://${eureka.instance.hostname}:${server.port}/actuator/info
+    health-check-url: http://${eureka.instance.hostname}:${server.port}/actuator/health
 
 # --- Actuator Configuration ---
 management:
@@ -22,4 +23,5 @@ management:
 
 # --- JWT Configuration (Non-Secrets) ---
 jwt:
+  # The secret key is in 'application-local.yml'
   expiration-ms: 3600000 # 1 hour
