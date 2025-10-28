@@ -11,6 +11,8 @@ springdoc:
         url: /v3/api-docs/license-service
       - name: User Service
         url: /v3/api-docs/user-service
+      - name: Auth Service
+        url: /v3/api-docs/auth-service
     use-relative-path: true
 
 spring:
@@ -67,6 +69,18 @@ spring:
           filters:
             - RewritePath=/v3/api-docs/user-service,/v3/api-docs
 
+        # AUTH SERVICE ROUTES
+        - id: auth-service-route
+          uri: lb://auth-service
+          predicates:
+            - Path=/auth/**
+
+        - id: openapi-authservice-route
+          uri: lb://auth-service
+          predicates:
+            - Path=/v3/api-docs/auth-service
+          filters:
+            - RewritePath=/v3/api-docs/auth-service,/v3/api-docs
 
 management:
   endpoints:
