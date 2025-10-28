@@ -1,11 +1,9 @@
 server:
   port: 8080
 
-# --- Central Swagger UI Configuration ---
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
-    # This manually creates the dropdown menu
     urls:
       - name: Device Service
         url: /v3/api-docs/device-service
@@ -17,62 +15,56 @@ springdoc:
 
 spring:
   cloud:
-    # --- This block fixes the deprecation warning ---
-    discovery: # <-- CORRECT LOCATION (Sibling of 'gateway')
+    discovery:
       locator:
         enabled: true
         lower-case-service-id: true
-        
+
     gateway:
-      server:
-        webflux:
-          routes:
-            # --- DEVICE-SERVICE ROUTES ---
-            - id: device-service-route
-              uri: lb://DEVICE-SERVICE
-              predicates:
-                - Path=/deviceservice/**
-              filters:
-                - StripPrefix=1
-                
-            - id: openapi-deviceservice-route
-              uri: lb://DEVICE-SERVICE
-              predicates:
-                - Path=/v3/api-docs/device-service
-              filters:
-                - RewritePath=/v3/api-docs/device-service, /v3/api-docs
+      routes:
 
-            # --- LICENSE-SERVICE ROUTES ---
-            - id: license-service-route
-              uri: lb://LICENSE-SERVICE
-              predicates:
-                - Path=/licenseservice/**
-              filters:
-                - StripPrefix=1
+        - id: device-service-route
+          uri: lb://DEVICE-SERVICE
+          predicates:
+            - Path=/deviceservice/**
+          filters:
+            - StripPrefix=1
 
-            - id: openapi-licenseservice-route
-              uri: lb://LICENSE-SERVICE
-              predicates:
-                - Path=/v3/api-docs/license-service
-              filters:
-                - RewritePath=/v3/api-docs/license-service, /v3/api-docs
+        - id: openapi-deviceservice-route
+          uri: lb://DEVICE-SERVICE
+          predicates:
+            - Path=/v3/api-docs/device-service
+          filters:
+            - RewritePath=/v3/api-docs/device-service, /v3/api-docs
 
-             # --- USER-SERVICE ROUTES ---
+        - id: license-service-route
+          uri: lb://LICENSE-SERVICE
+          predicates:
+            - Path=/licenseservice/**
+          filters:
+            - StripPrefix=1
 
-            - id: user-service-route
-              uri: lb://USER-SERVICE
-              predicates:
-                - Path=/userservice/**
-              filters:
-                - StripPrefix=1
-                
-            - id: openapi-userservice-route
-              uri: lb://USER-SERVICE
-              predicates:
-                - Path=/v3/api-docs/user-service
-              filters:
-                - RewritePath=/v3/api-docs/user-service, /v3/api-docs
-                
+        - id: openapi-licenseservice-route
+          uri: lb://LICENSE-SERVICE
+          predicates:
+            - Path=/v3/api-docs/license-service
+          filters:
+            - RewritePath=/v3/api-docs/license-service, /v3/api-docs
+
+        - id: user-service-route
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/userservice/**
+          filters:
+            - StripPrefix=1
+
+        - id: openapi-userservice-route
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/v3/api-docs/user-service
+          filters:
+            - RewritePath=/v3/api-docs/user-service, /v3/api-docs
+
 management:
   endpoints:
     web:
@@ -82,7 +74,4 @@ management:
 eureka:
   instance:
     hostname: localhost
-    secure-port-enabled: false
     non-secure-port: ${server.port}
-    status-page-url: http://${eureka.instance.hostname}:${server.port}/actuator/info
-    health-check-url: http://${eureka.instance.hostname}:${server.port}/actuator/health
