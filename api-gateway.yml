@@ -22,48 +22,51 @@ spring:
 
     gateway:
       routes:
-
+        # DEVICE SERVICE ROUTES
         - id: device-service-route
-          uri: lb://DEVICE-SERVICE
+          uri: lb://device-service
           predicates:
             - Path=/deviceservice/**
           filters:
             - StripPrefix=1
 
         - id: openapi-deviceservice-route
-          uri: lb://DEVICE-SERVICE
+          uri: lb://device-service
           predicates:
             - Path=/v3/api-docs/device-service
           filters:
-            - RewritePath=/v3/api-docs/device-service, /v3/api-docs
+            - RewritePath=/v3/api-docs/device-service,/v3/api-docs
 
+        # LICENSE SERVICE ROUTES
         - id: license-service-route
-          uri: lb://LICENSE-SERVICE
+          uri: lb://license-service
           predicates:
             - Path=/licenseservice/**
           filters:
             - StripPrefix=1
 
         - id: openapi-licenseservice-route
-          uri: lb://LICENSE-SERVICE
+          uri: lb://license-service
           predicates:
             - Path=/v3/api-docs/license-service
           filters:
-            - RewritePath=/v3/api-docs/license-service, /v3/api-docs
+            - RewritePath=/v3/api-docs/license-service,/v3/api-docs
 
+        # USER SERVICE ROUTES
         - id: user-service-route
-          uri: lb://USER-SERVICE
+          uri: lb://user-service
           predicates:
             - Path=/userservice/**
           filters:
             - StripPrefix=1
 
         - id: openapi-userservice-route
-          uri: lb://USER-SERVICE
+          uri: lb://user-service
           predicates:
             - Path=/v3/api-docs/user-service
           filters:
-            - RewritePath=/v3/api-docs/user-service, /v3/api-docs
+            - RewritePath=/v3/api-docs/user-service,/v3/api-docs
+
 
 management:
   endpoints:
@@ -74,4 +77,3 @@ management:
 eureka:
   instance:
     hostname: localhost
-    non-secure-port: ${server.port}
