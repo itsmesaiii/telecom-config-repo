@@ -5,9 +5,8 @@ server:
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/device_db?createDatabaseIfNotExist=true
-    username: root
-    password: root
-
+    # The username and password are now loaded from application-local.yml
+  
   jpa:
     hibernate:
       ddl-auto: update
@@ -34,4 +33,3 @@ eureka:
     non-secure-port: ${server.port}
     status-page-url: http://${eureka.instance.hostname}:${server.port}/actuator/info
     health-check-url: http://${eureka.instance.hostname}:${server.port}/actuator/health
-
