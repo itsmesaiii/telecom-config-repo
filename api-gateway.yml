@@ -23,71 +23,74 @@ spring:
         lower-case-service-id: true
 
     gateway:
-      routes:
-        # DEVICE SERVICE ROUTES
-        - id: device-service-route
-          uri: lb://device-service
-          predicates:
-            - Path=/deviceservice/**
-          filters:
-            - StripPrefix=1
+      server:
+        webflux:
+          routes:
+            # DEVICE SERVICE ROUTES
+            - id: device-service-route
+              uri: lb://device-service
+              predicates:
+                - Path=/deviceservice/**
+              filters:
+                - StripPrefix=1
 
-        - id: openapi-deviceservice-route
-          uri: lb://device-service
-          predicates:
-            - Path=/v3/api-docs/device-service
-          filters:
-            - RewritePath=/v3/api-docs/device-service,/v3/api-docs
+            - id: openapi-deviceservice-route
+              uri: lb://device-service
+              predicates:
+                - Path=/v3/api-docs/device-service
+              filters:
+                - RewritePath=/v3/api-docs/device-service,/v3/api-docs
 
-        # LICENSE SERVICE ROUTES
-        - id: license-service-route
-          uri: lb://license-service
-          predicates:
-            - Path=/licenseservice/**
-          filters:
-            - StripPrefix=1
+            # LICENSE SERVICE ROUTES
+            - id: license-service-route
+              uri: lb://license-service
+              predicates:
+                - Path=/licenseservice/**
+              filters:
+                - StripPrefix=1
 
-        - id: openapi-licenseservice-route
-          uri: lb://license-service
-          predicates:
-            - Path=/v3/api-docs/license-service
-          filters:
-            - RewritePath=/v3/api-docs/license-service,/v3/api-docs
+            - id: openapi-licenseservice-route
+              uri: lb://license-service
+              predicates:
+                - Path=/v3/api-docs/license-service
+              filters:
+                - RewritePath=/v3/api-docs/license-service,/v3/api-docs
 
-        # USER SERVICE ROUTES
-        - id: user-service-route
-          uri: lb://user-service
-          predicates:
-            - Path=/userservice/**
-          filters:
-            - StripPrefix=1
+            # USER SERVICE ROUTES
+            - id: user-service-route
+              uri: lb://user-service
+              predicates:
+                - Path=/userservice/**
+              filters:
+                - StripPrefix=1
 
-        - id: openapi-userservice-route
-          uri: lb://user-service
-          predicates:
-            - Path=/v3/api-docs/user-service
-          filters:
-            - RewritePath=/v3/api-docs/user-service,/v3/api-docs
+            - id: openapi-userservice-route
+              uri: lb://user-service
+              predicates:
+                - Path=/v3/api-docs/user-service
+              filters:
+                - RewritePath=/v3/api-docs/user-service,/v3/api-docs
 
-        # AUTH SERVICE ROUTES
-        - id: auth-service-route
-          uri: lb://auth-service
-          predicates:
-            - Path=/auth/**
+            # AUTH SERVICE ROUTES
+            - id: auth-service-route
+              uri: lb://auth-service
+              predicates:
+                - Path=/auth/**
 
-        - id: openapi-authservice-route
-          uri: lb://auth-service
-          predicates:
-            - Path=/v3/api-docs/auth-service
-          filters:
-            - RewritePath=/v3/api-docs/auth-service,/v3/api-docs
+            - id: openapi-authservice-route
+              uri: lb://auth-service
+              predicates:
+                - Path=/v3/api-docs/auth-service
+              filters:
+                - RewritePath=/v3/api-docs/auth-service,/v3/api-docs
 
 management:
   endpoints:
     web:
       exposure:
-        include: health,info
+        include: health,info,gateway
 
 eureka:
   instance:
     hostname: localhost
+    
