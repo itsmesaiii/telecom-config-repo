@@ -1,27 +1,41 @@
 server:
   port: 9004
 
-# --- Eureka Client Configuration ---
+spring:
+  security:
+    oauth2:
+      authorizationserver:
+        # REQUIRED: This is the "public name" of the auth server.
+        # It will be stamped into every JWT as the "issuer".
+        issuer: http://localhost:9004
+
+# --- Eureka Client Configuration (Your settings are perfect) ---
 eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka/
-  
   instance:
-    hostname: localhost 
+    hostname: localhost
     secure-port-enabled: false
     non-secure-port: ${server.port}
     status-page-url: http://${eureka.instance.hostname}:${server.port}/actuator/info
     health-check-url: http://${eureka.instance.hostname}:${server.port}/actuator/health
 
-# --- Actuator Configuration ---
+# --- Actuator Configuration (Your setting is perfect) ---
 management:
   endpoints:
     web:
       exposure:
         include: health,info
 
-# --- JWT Configuration (Non-Secrets) ---
-jwt:
-  # The secret key is in 'application-local.yml'
-  expiration-ms: 3600000 # 1 hour
+# --- Custom Application Properties ---
+app:
+  clients:
+    user-service:
+      # REQUIRED: This tells our WebClient how to find the user-service
+      # The "lb://" prefix means "use Eureka's Load Balancer".
+      url: "lb://user-service/api/v1/users"
+  
+  jwt:
+    # We will use your property name:
+    expiration-ms: 3600000 # 1 hour
