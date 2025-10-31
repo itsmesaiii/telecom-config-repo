@@ -39,3 +39,9 @@ app:
   jwt:
     # We will use your property name:
     expiration-ms: 3600000 # 1 hour
+
+
+springdoc:
+  servers:
+    - url: /auth
+      description: Auth Service via Gateway
