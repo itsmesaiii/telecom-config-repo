@@ -16,6 +16,7 @@ springdoc:
       - name: Auth Service
         url: /v3/api-docs/auth-service
     use-relative-path: true
+    persist-authorization: true
 
 spring:
   cloud:
