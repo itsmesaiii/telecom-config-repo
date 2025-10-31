@@ -2,6 +2,9 @@ server:
   port: 9003
 
 spring:
+  application:
+    name: user-service
+
   datasource:
     url: jdbc:mysql://localhost:3306/user_db?createDatabaseIfNotExist=true
 
@@ -13,14 +16,12 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
 
-# --- Actuator Configuration ---
 management:
   endpoints:
     web:
       exposure:
         include: health,info
 
-# --- Eureka Client Configuration ---
 eureka:
   client:
     service-url:
