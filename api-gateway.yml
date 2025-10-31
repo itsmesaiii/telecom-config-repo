@@ -9,6 +9,8 @@ springdoc:
         url: /v3/api-docs/device-service
       - name: License Service
         url: /v3/api-docs/license-service
+      - name: Assignment Service
+        url: /v3/api-docs/assignment-service
       - name: User Service
         url: /v3/api-docs/user-service
       - name: Auth Service
@@ -56,6 +58,21 @@ spring:
               filters:
                 - RewritePath=/v3/api-docs/license-service,/v3/api-docs
 
+            # ASSIGNMENT SERVICE ROUTES
+            - id: assignment-service-route
+              uri: lb://assignment-service
+              predicates:
+                - Path=/assignmentservice/**
+              filters:
+                - StripPrefix=1
+
+            - id: openapi-assignmentservice-route
+              uri: lb://assignment-service
+              predicates:
+                - Path=/v3/api-docs/assignment-service
+              filters:
+                - RewritePath=/v3/api-docs/assignment-service,/v3/api-docs
+
             # USER SERVICE ROUTES
             - id: user-service-route
               uri: lb://user-service
@@ -93,4 +110,3 @@ management:
 eureka:
   instance:
     hostname: localhost
-    
