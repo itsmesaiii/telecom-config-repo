@@ -21,7 +21,8 @@ springdoc:
         url: /v3/api-docs/compliance-service
       - name: Alert-Notification Service
         url: /v3/api-docs/alert-notification-service
-
+      - name: Report Service
+        url: /v3/api-docs/report-service
     use-relative-path: true
     persist-authorization: true
 
@@ -153,6 +154,21 @@ spring:
                 - Path=/v3/api-docs/alert-notification-service
               filters:
                 - RewritePath=/v3/api-docs/alert-notification-service,/v3/api-docs
+                
+            # REPORT SERVICE ROUTES
+            - id: report-service-route
+              uri: lb://report-service
+              predicates:
+                - Path=/reportservice/**
+              filters:
+                - StripPrefix=1
+
+            - id: openapi-reportservice-route
+              uri: lb://report-service
+              predicates:
+                - Path=/v3/api-docs/report-service
+              filters:
+                - RewritePath=/v3/api-docs/report-service,/v3/api-docs
 
 
 management:
