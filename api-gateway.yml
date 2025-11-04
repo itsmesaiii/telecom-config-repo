@@ -17,6 +17,8 @@ springdoc:
         url: /v3/api-docs/auth-service
       - name: Audit Service
         url: /v3/api-docs/audit-service
+      - name: Compliance Service
+        url: /v3/api-docs/compliance-service
     use-relative-path: true
     persist-authorization: true
 
@@ -96,7 +98,7 @@ spring:
               uri: lb://auth-service
               predicates:
                 - Path=/auth/**
-
+              
             - id: openapi-authservice-route
               uri: lb://auth-service
               predicates:
@@ -118,6 +120,21 @@ spring:
                 - Path=/v3/api-docs/audit-service
               filters:
                 - RewritePath=/v3/api-docs/audit-service,/v3/api-docs
+
+            # COMPLIANCE SERVICE ROUTES
+            - id: compliance-service-route
+              uri: lb://compliance-service
+              predicates:
+                - Path=/complianceservice/**
+              filters:
+                - StripPrefix=1
+
+            - id: openapi-complianceservice-route
+              uri: lb://compliance-service
+              predicates:
+                - Path=/v3/api-docs/compliance-service
+              filters:
+                - RewritePath=/v3/api-docs/compliance-service,/v3/api-docs
 
 management:
   endpoints:
