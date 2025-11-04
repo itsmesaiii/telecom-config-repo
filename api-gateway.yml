@@ -19,6 +19,9 @@ springdoc:
         url: /v3/api-docs/audit-service
       - name: Compliance Service
         url: /v3/api-docs/compliance-service
+      - name: Alert-Notification Service
+        url: /v3/api-docs/alert-notification-service
+
     use-relative-path: true
     persist-authorization: true
 
@@ -135,6 +138,22 @@ spring:
                 - Path=/v3/api-docs/compliance-service
               filters:
                 - RewritePath=/v3/api-docs/compliance-service,/v3/api-docs
+
+            # ALERT-NOTIFICATION SERVICE ROUTES
+            - id: alert-notification-service-route
+              uri: lb://alert-notification-service
+              predicates:
+                - Path=/alertnotificationservice/**
+              filters:
+                - StripPrefix=1
+
+            - id: openapi-alertnotificationservice-route
+              uri: lb://alert-notification-service
+              predicates:
+                - Path=/v3/api-docs/alert-notification-service
+              filters:
+                - RewritePath=/v3/api-docs/alert-notification-service,/v3/api-docs
+
 
 management:
   endpoints:
