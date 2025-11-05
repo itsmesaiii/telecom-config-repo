@@ -42,6 +42,8 @@ app:
   jwt:
     # JWT expiration time in milliseconds
     expiration-ms: 3600000 # 1 hour
+    
+  internal-auth-key: ${INTERNAL_AUTH_KEY}
 
 springdoc:
   servers:
