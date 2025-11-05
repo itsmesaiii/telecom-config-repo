@@ -33,12 +33,7 @@ eureka:
     status-page-url: http://${eureka.instance.hostname}:${server.port}/actuator/info
     health-check-url: http://${eureka.instance.hostname}:${server.port}/actuator/health
 
-app:
-  internal-auth-key: ${INTERNAL_AUTH_KEY}
-
-
 springdoc:
   servers:
     - url: /userservice
       description: User Service via Gateway
-
