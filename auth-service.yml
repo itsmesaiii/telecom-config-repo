@@ -5,11 +5,10 @@ spring:
   security:
     oauth2:
       authorizationserver:
-        # REQUIRED: This is the "public name" of the auth server.
-        # It will be stamped into every JWT as the "issuer".
+        # This value will appear as the "issuer" claim in every JWT
         issuer: http://localhost:9004
 
-# --- Eureka Client Configuration (Your settings are perfect) ---
+# --- Eureka Client Configuration ---
 eureka:
   client:
     service-url:
@@ -21,7 +20,7 @@ eureka:
     status-page-url: http://${eureka.instance.hostname}:${server.port}/actuator/info
     health-check-url: http://${eureka.instance.hostname}:${server.port}/actuator/health
 
-# --- Actuator Configuration (Your setting is perfect) ---
+# --- Actuator Configuration ---
 management:
   endpoints:
     web:
@@ -32,14 +31,17 @@ management:
 app:
   clients:
     user-service:
-      # REQUIRED: This tells our WebClient how to find the user-service
-      # The "lb://" prefix means "use Eureka's Load Balancer".
+      # WebClient base URL for user-service, load-balanced via Eureka
       url: "lb://user-service/api/v1/users"
-  
-  jwt:
-    # We will use your property name:
-    expiration-ms: 3600000 # 1 hour
 
+    audit-service:
+      # New: WebClient base URL for audit-service
+      # Used for sending login/password change audit logs
+      url: "lb://audit-service"
+
+  jwt:
+    # JWT expiration time in milliseconds
+    expiration-ms: 3600000 # 1 hour
 
 springdoc:
   servers:
