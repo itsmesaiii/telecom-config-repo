@@ -1,11 +1,9 @@
 server:
   port: 9001
 
-# --- Database Configuration ---
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/device_db?createDatabaseIfNotExist=true
-    # The username and password are now loaded from application-local.yml
+    url: jdbc:mysql://localhost:3006/device_db?createDatabaseIfNotExist=true
   
   jpa:
     hibernate:
@@ -15,14 +13,18 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
 
-# --- Actuator Configuration ---
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:9004
+
 management:
   endpoints:
     web:
       exposure:
         include: health,info
 
-# --- Eureka Client Configuration ---
 eureka:
   client:
     service-url:
@@ -38,3 +40,8 @@ springdoc:
   servers:
     - url: /deviceservice
       description: Device Service via Gateway
+
+app:
+  clients:
+    alert-notification-service: "lb://alert-notification-service/api/v1"
+    audit-service: "lb://audit-service/api/v1/audit"
