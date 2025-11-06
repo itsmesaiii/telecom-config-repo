@@ -2,11 +2,9 @@ server:
   port: 9008
 
 spring:
-  # --- Database Configuration ---
   datasource:
     url: jdbc:mysql://localhost:3306/alert_notification_db?createDatabaseIfNotExist=true
-    username: root
-    password: root
+    
   jpa:
     hibernate:
       ddl-auto: update
@@ -14,6 +12,7 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
+
 
 # --- Actuator Configuration ---
 management:
@@ -39,3 +38,15 @@ springdoc:
   servers:
     - url: /alertnotificationservice
       description: Alert Notification Service via Gateway
+
+# --- Client URLs (If this service calls any others) ---
+app:
+  clients:
+    audit-service: 
+      url: "lb://audit-service/api/v1/audit"
+    compliance-service: 
+      url: "lb://compliance-service/api/v1"
+    device-service: 
+      url: "lb://device-service/api/v1"
+    license-service: 
+      url: "lb://license-service/api/v1"
