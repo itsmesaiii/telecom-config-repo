@@ -2,155 +2,168 @@ server:
   port: 8080
 
 spring:
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          # We use lb:// (load balancer) because the gateway is registered with Eureka.
-          issuer-uri: lb://auth-service 
+  application:
+    name: api-gateway
 
   cloud:
-    discovery:
-      locator:
-        enabled: true
-        lower-case-service-id: true
-
     gateway:
-      server:
-        webflux:
-          routes:
-            # DEVICE SERVICE ROUTES
-            - id: device-service-route
-              uri: lb://device-service
-              predicates:
-                - Path=/deviceservice/**
-              filters:
-                - StripPrefix=1
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
 
-            - id: openapi-deviceservice-route
-              uri: lb://device-service
-              predicates:
-                - Path=/v3/api-docs/device-service
-              filters:
-                - RewritePath=/v3/api-docs/device-service,/v3/api-docs
+      routes:
+        # ===============================
+        # DEVICE SERVICE ROUTES
+        # ===============================
+        - id: device-service-route
+          uri: lb://device-service
+          predicates:
+            - Path=/deviceservice/**
+          filters:
+            - StripPrefix=1
 
-            # LICENSE SERVICE ROUTES
-            - id: license-service-route
-              uri: lb://license-service
-              predicates:
-                - Path=/licenseservice/**
-              filters:
-                - StripPrefix=1
+        - id: openapi-deviceservice-route
+          uri: lb://device-service
+          predicates:
+            - Path=/v3/api-docs/device-service
+          filters:
+            - RewritePath=/v3/api-docs/device-service,/v3/api-docs
 
-            - id: openapi-licenseservice-route
-              uri: lb://license-service
-              predicates:
-                - Path=/v3/api-docs/license-service
-              filters:
-                - RewritePath=/v3/api-docs/license-service,/v3/api-docs
+        # ===============================
+        # LICENSE SERVICE ROUTES
+        # ===============================
+        - id: license-service-route
+          uri: lb://license-service
+          predicates:
+            - Path=/licenseservice/**
+          filters:
+            - StripPrefix=1
 
-            # ASSIGNMENT SERVICE ROUTES
-            - id: assignment-service-route
-              uri: lb://assignment-service
-              predicates:
-                - Path=/assignmentservice/**
-              filters:
-                - StripPrefix=1
+        - id: openapi-licenseservice-route
+          uri: lb://license-service
+          predicates:
+            - Path=/v3/api-docs/license-service
+          filters:
+            - RewritePath=/v3/api-docs/license-service,/v3/api-docs
 
-            - id: openapi-assignmentservice-route
-              uri: lb://assignment-service
-              predicates:
-                - Path=/v3/api-docs/assignment-service
-              filters:
-                - RewritePath=/v3/api-docs/assignment-service,/v3/api-docs
+        # ===============================
+        # ASSIGNMENT SERVICE ROUTES
+        # ===============================
+        - id: assignment-service-route
+          uri: lb://assignment-service
+          predicates:
+            - Path=/assignmentservice/**
+          filters:
+            - StripPrefix=1
 
-            # USER SERVICE ROUTES
-            - id: user-service-route
-              uri: lb://user-service
-              predicates:
-                - Path=/userservice/**
-              filters:
-                - StripPrefix=1
+        - id: openapi-assignmentservice-route
+          uri: lb://assignment-service
+          predicates:
+            - Path=/v3/api-docs/assignment-service
+          filters:
+            - RewritePath=/v3/api-docs/assignment-service,/v3/api-docs
 
-            - id: openapi-userservice-route
-              uri: lb://user-service
-              predicates:
-                - Path=/v3/api-docs/user-service
-              filters:
-                - RewritePath=/v3/api-docs/user-service,/v3/api-docs
+        # ===============================
+        # USER SERVICE ROUTES
+        # ===============================
+        - id: user-service-route
+          uri: lb://user-service
+          predicates:
+            - Path=/userservice/**
+          filters:
+            - StripPrefix=1
 
-            # AUTH SERVICE ROUTES
-            - id: auth-service-route
-              uri: lb://auth-service
-              predicates:
-                - Path=/auth/**
-              
-            - id: openapi-authservice-route
-              uri: lb://auth-service
-              predicates:
-                - Path=/v3/api-docs/auth-service
-              filters:
-                - RewritePath=/v3/api-docs/auth-service,/v3/api-docs
+        - id: openapi-userservice-route
+          uri: lb://user-service
+          predicates:
+            - Path=/v3/api-docs/user-service
+          filters:
+            - RewritePath=/v3/api-docs/user-service,/v3/api-docs
 
-            # AUDIT SERVICE ROUTES
-            - id: audit-service-route
-              uri: lb://audit-service
-              predicates:
-                - Path=/auditservice/**
-              filters:
-                - StripPrefix=1
+        # ===============================
+        # AUTH SERVICE ROUTES
+        # ===============================
+        - id: auth-service-route
+          uri: lb://auth-service
+          predicates:
+            - Path=/auth/**
+          filters: []
 
-            - id: openapi-auditservice-route
-              uri: lb://audit-service
-              predicates:
-                - Path=/v3/api-docs/audit-service
-              filters:
-                - RewritePath=/v3/api-docs/audit-service,/v3/api-docs
+        - id: openapi-authservice-route
+          uri: lb://auth-service
+          predicates:
+            - Path=/v3/api-docs/auth-service
+          filters:
+            - RewritePath=/v3/api-docs/auth-service,/v3/api-docs
 
-            # COMPLIANCE SERVICE ROUTES
-            - id: compliance-service-route
-              uri: lb://compliance-service
-              predicates:
-                - Path=/complianceservice/**
-              filters:
-                - StripPrefix=1
+        # ===============================
+        # AUDIT SERVICE ROUTES
+        # ===============================
+        - id: audit-service-route
+          uri: lb://audit-service
+          predicates:
+            - Path=/auditservice/**
+          filters:
+            - StripPrefix=1
 
-            - id: openapi-complianceservice-route
-              uri: lb://compliance-service
-              predicates:
-                - Path=/v3/api-docs/compliance-service
-              filters:
-                - RewritePath=/v3/api-docs/compliance-service,/v3/api-docs
+        - id: openapi-auditservice-route
+          uri: lb://audit-service
+          predicates:
+            - Path=/v3/api-docs/audit-service
+          filters:
+            - RewritePath=/v3/api-docs/audit-service,/v3/api-docs
 
-            # ALERT-NOTIFICATION SERVICE ROUTES
-            - id: alert-notification-service-route
-              uri: lb://alert-notification-service
-              predicates:
-                - Path=/alertnotificationservice/**
-              filters:
-                - StripPrefix=1
+        # ===============================
+        # COMPLIANCE SERVICE ROUTES
+        # ===============================
+        - id: compliance-service-route
+          uri: lb://compliance-service
+          predicates:
+            - Path=/complianceservice/**
+          filters:
+            - StripPrefix=1
 
-            - id: openapi-alertnotificationservice-route
-              uri: lb://alert-notification-service
-              predicates:
-                - Path=/v3/api-docs/alert-notification-service
-              filters:
-                - RewritePath=/v3/api-docs/alert-notification-service,/v3/api-docs
-                
-            # REPORT SERVICE ROUTES
-            - id: report-service-route
-              uri: lb://report-service
-              predicates:
-                - Path=/reportservice/**
-              filters:
-                - StripPrefix=1
+        - id: openapi-complianceservice-route
+          uri: lb://compliance-service
+          predicates:
+            - Path=/v3/api-docs/compliance-service
+          filters:
+            - RewritePath=/v3/api-docs/compliance-service,/v3/api-docs
 
-            - id: openapi-reportservice-route
-              uri: lb://report-service
-              predicates:
-                - Path=/v3/api-docs/report-service
-              filters:
-                - RewritePath=/v3/api-docs/report-service,/v3/api-docs
+        # ===============================
+        # ALERT-NOTIFICATION SERVICE ROUTES
+        # ===============================
+        - id: alert-notification-service-route
+          uri: lb://alert-notification-service
+          predicates:
+            - Path=/alertnotificationservice/**
+          filters:
+            - StripPrefix=1
+
+        - id: openapi-alertnotificationservice-route
+          uri: lb://alert-notification-service
+          predicates:
+            - Path=/v3/api-docs/alert-notification-service
+          filters:
+            - RewritePath=/v3/api-docs/alert-notification-service,/v3/api-docs
+
+        # ===============================
+        # REPORT SERVICE ROUTES
+        # ===============================
+        - id: report-service-route
+          uri: lb://report-service
+          predicates:
+            - Path=/reportservice/**
+          filters:
+            - StripPrefix=1
+
+        - id: openapi-reportservice-route
+          uri: lb://report-service
+          predicates:
+            - Path=/v3/api-docs/report-service
+          filters:
+            - RewritePath=/v3/api-docs/report-service,/v3/api-docs
 
 
 springdoc:
@@ -171,12 +184,13 @@ springdoc:
         url: /v3/api-docs/audit-service
       - name: Compliance Service
         url: /v3/api-docs/compliance-service
-      - name: Alert-Notification Service
+      - name: Alert Notification Service
         url: /v3/api-docs/alert-notification-service
       - name: Report Service
         url: /v3/api-docs/report-service
-    use-relative-path: true
     persist-authorization: true
+    use-relative-path: true
+
 
 management:
   endpoints:
@@ -188,5 +202,15 @@ management:
       access: unrestricted
 
 eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
   instance:
     hostname: localhost
+    prefer-ip-address: false
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.web: DEBUG
+    org.apache.coyote.http11: DEBUG
