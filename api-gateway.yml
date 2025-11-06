@@ -1,32 +1,14 @@
 server:
   port: 8080
 
-springdoc:
-  swagger-ui:
-    path: /swagger-ui.html
-    urls:
-      - name: Device Service
-        url: /v3/api-docs/device-service
-      - name: License Service
-        url: /v3/api-docs/license-service
-      - name: Assignment Service
-        url: /v3/api-docs/assignment-service
-      - name: User Service
-        url: /v3/api-docs/user-service
-      - name: Auth Service
-        url: /v3/api-docs/auth-service
-      - name: Audit Service
-        url: /v3/api-docs/audit-service
-      - name: Compliance Service
-        url: /v3/api-docs/compliance-service
-      - name: Alert-Notification Service
-        url: /v3/api-docs/alert-notification-service
-      - name: Report Service
-        url: /v3/api-docs/report-service
-    use-relative-path: true
-    persist-authorization: true
-
 spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          # We use lb:// (load balancer) because the gateway is registered with Eureka.
+          issuer-uri: lb://auth-service 
+
   cloud:
     discovery:
       locator:
@@ -168,8 +150,33 @@ spring:
               predicates:
                 - Path=/v3/api-docs/report-service
               filters:
-                - RewritePath=/v3/api-docs/report-service,/v3/api-docs
+                - RewritePath=/v3/api-docs/report-service,/v3/api-Next
 
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    urls:
+      - name: Device Service
+        url: /v3/api-docs/device-service
+      - name: License Service
+        url: /v3/api-docs/license-service
+      - name: Assignment Service
+        url: /v3/api-docs/assignment-service
+      - name: User Service
+        url: /v3/api-docs/user-service
+      - name: Auth Service
+        url: /v3/api-docs/auth-service
+      - name: Audit Service
+        url: /v3/api-docs/audit-service
+      - name: Compliance Service
+        url: /v3/api-docs/compliance-service
+      - name: Alert-Notification Service
+        url: /v3/api-docs/alert-notification-service
+      - name: Report Service
+        url: /v3/api-docs/report-service
+    use-relative-path: true
+    persist-authorization: true
 
 management:
   endpoints:
