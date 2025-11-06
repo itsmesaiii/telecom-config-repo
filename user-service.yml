@@ -16,13 +16,6 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
 
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          # This tells the service to trust tokens issued by the auth-service
-          issuer-uri: http://localhost:9004 
-
 management:
   endpoints:
     web:
@@ -44,3 +37,8 @@ springdoc:
   servers:
     - url: /userservice
       description: User Service via Gateway
+
+app:
+  clients:
+    audit-service:
+      url: "lb://audit-service/api/v1/audit"
