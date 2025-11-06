@@ -150,7 +150,7 @@ spring:
               predicates:
                 - Path=/v3/api-docs/report-service
               filters:
-                - RewritePath=/v3/api-docs/report-service,/v3/api-Next
+                - RewritePath=/v3/api-docs/report-service,/v3/api-docs
 
 
 springdoc:
