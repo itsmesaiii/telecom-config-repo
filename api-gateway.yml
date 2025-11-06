@@ -182,7 +182,10 @@ management:
   endpoints:
     web:
       exposure:
-        include: health,info,gateway
+        include: health,info,gateway,env,loggers
+  endpoint:
+    gateway:
+      enabled: true
 
 eureka:
   instance:
