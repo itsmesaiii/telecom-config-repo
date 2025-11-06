@@ -43,7 +43,11 @@ springdoc:
 
 app:
   clients:
-    alert-notification-service: "lb://alert-notification-service/api/v1"
-    audit-service: "lb://audit-service/api/v1/audit"
-    device-service: "lb://device-service/api/v1" 
-    license-service: "lb://license-service/api/v1"
+    alert-notification-service: 
+      url: "lb://alert-notification-service/api/v1"
+    audit-service: 
+      url: "lb://audit-service/api/v1/audit"
+    device-service: 
+      url: "lb://device-service/api/v1" 
+    license-service: 
+      url: "lb://license-service/api/v1"
