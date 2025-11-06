@@ -33,8 +33,6 @@ app:
     audit-service:
       url: "lb://audit-service/api/v1/audit"
 
-  jwt:
-    expiration-ms: 3600000 # 1 hour
 
 springdoc:
   servers:
