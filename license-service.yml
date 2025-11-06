@@ -13,6 +13,13 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
 
+  # --- Security: For VALIDATING tokens ---
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:9004
+
 # --- Actuator Configuration ---
 management:
   endpoints:
@@ -36,3 +43,9 @@ springdoc:
   servers:
     - url: /licenseservice
       description: License Service via Gateway
+
+# --- Clients: For calling other services ---
+app:
+  clients:
+    audit-service: "lb://audit-service/api/v1/audit"
+    alert-notification-service: "lb://alert-notification-service/api/v1"
