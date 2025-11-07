@@ -4,7 +4,7 @@ server:
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/alert_notification_db?createDatabaseIfNotExist=true
-    
+
   jpa:
     hibernate:
       ddl-auto: update
@@ -13,15 +13,18 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
 
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          public-key-location: classpath:keys/auth-public.pem
 
-# --- Actuator Configuration ---
 management:
   endpoints:
     web:
       exposure:
         include: health,info
 
-# --- Eureka Client Configuration ---
 eureka:
   client:
     service-url:
@@ -33,20 +36,18 @@ eureka:
     status-page-url: http://${eureka.instance.hostname}:${server.port}/actuator/info
     health-check-url: http://${eureka.instance.hostname}:${server.port}/actuator/health
 
-# --- SpringDoc Swagger Configuration ---
 springdoc:
   servers:
     - url: /alertnotificationservice
       description: Alert Notification Service via Gateway
 
-# --- Client URLs (If this service calls any others) ---
 app:
   clients:
-    audit-service: 
+    audit-service:
       url: "lb://audit-service/api/v1/audit"
-    compliance-service: 
+    compliance-service:
       url: "lb://compliance-service/api/v1"
-    device-service: 
+    device-service:
       url: "lb://device-service/api/v1"
-    license-service: 
+    license-service:
       url: "lb://license-service/api/v1"
