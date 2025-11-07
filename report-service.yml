@@ -13,8 +13,12 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
 
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          public-key-location: classpath:keys/auth-public.pem
 
-# --- Actuator, Eureka, SpringDoc Configs ---
 management:
   endpoints:
     web:
@@ -37,7 +41,6 @@ springdoc:
     - url: /reportservice
       description: Report Service via Gateway
 
-#  The client URLs
 app:
   clients:
     license-service:
