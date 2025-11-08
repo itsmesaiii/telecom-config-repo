@@ -17,7 +17,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          public-key-location: classpath:keys/auth-public.pem
+          public-key-location: keys/auth-public.pem
 
 management:
   endpoints:
